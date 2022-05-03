@@ -1,10 +1,16 @@
 name: Build Deploy Simple Web Server
 
 on:
-  push:
-    paths:
-    - 'docker-samples/simple-webserver/**'
-
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Pushing image to GCR'
+        # Input doesn't have to be provided for the workflow to run
+        required: false
+  #push:
+  
 jobs:
   demo-parallelism:
     runs-on: ubuntu-latest
@@ -29,7 +35,7 @@ jobs:
       
     - name: 'Submit to cloud build'
       run: |
-        cd docker-samples/simple-webserver
-        gcloud builds submit --tag gcr.io/smu-5346-s22/simple-webserver
+        gcloud builds submit --tag gcr.io/assignment3-349100/simple-webserver
     - name: 'Deploy to Cloud Run'
-      run: gcloud run deploy simple-webserver --image=gcr.io/smu-5346-s22/simple-webserver:latest --region=us-central1 --allow-unauthenticated
+      run: gcloud run deploy simple-webserver --image=gcr.io/assignment3-349100/simple-webserver:latest --region=us-central1 --allow-unauthenticated
+
